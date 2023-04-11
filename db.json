@@ -1,23 +1,19 @@
 {
   "posts": [
     {
-      "posts": [
-        {
-          "id": 1,
-          "text": "내용 1",
-          "isComplete": false
-        },
-        {
-          "id": 2,
-          "text": "내용 2",
-          "isComplete": false
-        },
-        {
-          "id": 3,
-          "text": "내용 3",
-          "isComplete": false
-        }
-      ]
+      "id": 1,
+      "text": "내용 1",
+      "isComplete": false
+    },
+    {
+      "id": 2,
+      "text": "내용 2",
+      "isComplete": false
+    },
+    {
+      "id": 3,
+      "text": "내용 3",
+      "isComplete": false
     }
   ]
 }

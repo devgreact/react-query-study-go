@@ -1,41 +1,44 @@
-import { useState } from "react";
-import { useQuery } from "react-query";
+import { useMutation } from "react-query";
 
 function App() {
-  const [todos, setTodos] = useState([]);
-
-  const getTodo = async () => {
-    const res = await fetch("http://localhost:4000/posts");
-    return res.json();
+  const mutationFn = async (newTodo) => {
+    const { data } = await fetch("http://localhost:4000/posts", {
+      method: "POST",
+      body: JSON.stringify(newTodo),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    });
+    return data;
   };
 
-  // const { data, isLoading, isError, error } = useQuery(
-  //   "todos",
-  //   () => fetch("http://localhost:4000/posts").then((res) => res.json()),
-  //   {
-  //     staleTime: 10000, // 10초
-  //   }
-  // );
-  const { data, isLoading, isError, error } = useQuery("todos", getTodo, {
-    staleTime: 10000, // 10초
-  });
+  const { mutate, isLoading, isError, error, isSuccess } =
+    useMutation(mutationFn);
 
-  if (isLoading) {
-    return <span>Loading...</span>;
-  }
-
-  if (isError) {
-    return <span>Error: {error.message}</span>;
-  }
-  console.log(data[0].posts);
   return (
-    <>
-      <ul>
-        {data[0].posts.map((todo) => (
-          <li key={todo.id}>{todo.text}</li>
-        ))}
-      </ul>
-    </>
+    <div>
+      {isLoading ? (
+        "Adding todo..."
+      ) : (
+        <>
+          {isError && <p>error: {error.message}</p>}
+
+          {isSuccess && <p>Todo added!</p>}
+
+          <button
+            onClick={() => {
+              mutate({
+                id: 101,
+                text: "새로운 내용 작성",
+                isComplete: false,
+              });
+            }}
+          >
+            작성 완료
+          </button>
+        </>
+      )}
+    </div>
   );
 }
 
