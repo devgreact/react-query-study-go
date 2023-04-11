@@ -9,8 +9,16 @@ function App() {
     return res.json();
   };
 
-  const { isLoading, isError, data, error } = useQuery("todos", getTodo);
-  console.log(data);
+  // const { data, isLoading, isError, error } = useQuery(
+  //   "todos",
+  //   () => fetch("http://localhost:4000/posts").then((res) => res.json()),
+  //   {
+  //     staleTime: 10000, // 10초
+  //   }
+  // );
+  const { data, isLoading, isError, error } = useQuery("todos", getTodo, {
+    staleTime: 10000, // 10초
+  });
 
   if (isLoading) {
     return <span>Loading...</span>;
@@ -19,12 +27,13 @@ function App() {
   if (isError) {
     return <span>Error: {error.message}</span>;
   }
+  console.log(data[0].posts);
   return (
     <>
       <ul>
-        {/* {todos.map((todo) => (
-          <li key={todo.id}>{todo.title}</li>
-        ))} */}
+        {data[0].posts.map((todo) => (
+          <li key={todo.id}>{todo.text}</li>
+        ))}
       </ul>
     </>
   );
